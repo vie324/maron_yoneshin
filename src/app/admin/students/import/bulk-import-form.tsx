@@ -13,8 +13,8 @@ const domain = process.env.NEXT_PUBLIC_MEMBER_EMAIL_DOMAIN;
 export function BulkImportForm() {
   const [state, formAction] = useFormState(bulkCreateStudents, initial);
 
-  const created = state.results?.filter((r) => r.status === "created") ?? [];
-  const failed = state.results?.filter((r) => r.status === "failed") ?? [];
+  const created = state?.results?.filter((r) => r.status === "created") ?? [];
+  const failed = state?.results?.filter((r) => r.status === "failed") ?? [];
 
   return (
     <div className="space-y-5">
@@ -46,7 +46,7 @@ export function BulkImportForm() {
           </div>
         </div>
 
-        {state.error && (
+        {state?.error && (
           <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
             {state.error}
           </p>
@@ -55,7 +55,7 @@ export function BulkImportForm() {
         <SubmitButton pendingText="登録中…">一括登録する</SubmitButton>
       </form>
 
-      {state.results && (
+      {state?.results && (
         <div className="space-y-4">
           <div className="flex gap-2 text-sm">
             <Badge variant="success">成功 {created.length}</Badge>

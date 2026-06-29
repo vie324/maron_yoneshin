@@ -109,10 +109,10 @@ export function StudentRow({ student }: { student: Profile }) {
                     required
                   />
                 </div>
-                {resetState.error && (
+                {resetState?.error && (
                   <p className="text-sm text-destructive">{resetState.error}</p>
                 )}
-                {resetState.success && (
+                {resetState?.success && (
                   <p className="text-sm text-emerald-700">
                     {resetState.success}
                   </p>

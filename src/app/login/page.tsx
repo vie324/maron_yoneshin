@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { isDemoMode } from "@/lib/demo/mode";
 import { LoginForm } from "./login-form";
+import { DemoLogin } from "./demo-login";
 
 export const metadata: Metadata = { title: "ログイン" };
 
@@ -17,10 +19,16 @@ export default function LoginPage() {
           </p>
         </CardHeader>
         <CardContent>
-          <LoginForm />
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            ログイン情報がわからない場合は運営者にお問い合わせください。
-          </p>
+          {isDemoMode() ? (
+            <DemoLogin />
+          ) : (
+            <>
+              <LoginForm />
+              <p className="mt-4 text-center text-xs text-muted-foreground">
+                ログイン情報がわからない場合は運営者にお問い合わせください。
+              </p>
+            </>
+          )}
         </CardContent>
       </Card>
     </main>

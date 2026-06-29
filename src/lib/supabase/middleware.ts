@@ -1,7 +1,26 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isDemoMode, DEMO_COOKIE } from "@/lib/demo/mode";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
+
+/** デモモード用のログインガード（Cookie の有無だけで判定）。 */
+function demoGuard(request: NextRequest) {
+  const hasUser = !!request.cookies.get(DEMO_COOKIE)?.value;
+  const isLogin = request.nextUrl.pathname === "/login";
+
+  if (!hasUser && !isLogin) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+  if (hasUser && isLogin) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+  return NextResponse.next({ request });
+}
 
 /**
  * セッションの更新とログインガードを行う。
@@ -10,6 +29,8 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
  * ロール（admin）/ ステータス（suspended）の細かい制御は各レイアウトで行う。
  */
 export async function updateSession(request: NextRequest) {
+  if (isDemoMode()) return demoGuard(request);
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(

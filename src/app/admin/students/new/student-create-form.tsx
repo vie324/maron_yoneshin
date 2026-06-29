@@ -29,11 +29,11 @@ export function StudentCreateForm() {
 
   // 登録成功時にフォームをクリア
   React.useEffect(() => {
-    if (state.success) {
+    if (state?.success) {
       formRef.current?.reset();
       setPassword("");
     }
-  }, [state.success]);
+  }, [state?.success]);
 
   return (
     <form ref={formRef} action={formAction} className="space-y-4">
@@ -87,12 +87,12 @@ export function StudentCreateForm() {
         </p>
       </div>
 
-      {state.error && (
+      {state?.error && (
         <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {state.error}
         </p>
       )}
-      {state.success && (
+      {state?.success && (
         <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
           {state.success}
         </p>
